@@ -7,11 +7,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class TankFrame extends Frame {
+    static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
     Tank MyTank = new Tank(200, 200, Dir.UP);
     Bullet b = new Bullet(300 , 300, Dir.UP);
 
     public TankFrame() {
-        setSize(700, 400);
+        setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
         setTitle("Tank War");
         setVisible(true);
@@ -29,6 +30,22 @@ public class TankFrame extends Frame {
     public void paint(Graphics g) {
         MyTank.paint(g);
         b.paint(g);
+    }
+
+    // 消除闪烁现象
+    Image offscreenImage = null;
+    @Override
+    public void update(Graphics g) {
+        if (offscreenImage == null) {
+            offscreenImage = this.createImage(GAME_WIDTH, GAME_HEIGHT);
+        }
+        Graphics goffScreen = offscreenImage.getGraphics();
+        Color c = goffScreen.getColor();
+        goffScreen.setColor(Color.BLACK);
+        goffScreen.fillRect(0 , 0, GAME_WIDTH, GAME_HEIGHT);
+        goffScreen.setColor(c);
+        paint(goffScreen);
+        g.drawImage(offscreenImage, 0, 0, null);
     }
 
     class MyKeyListener extends KeyAdapter{
