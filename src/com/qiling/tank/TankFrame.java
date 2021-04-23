@@ -10,8 +10,9 @@ import java.util.List;
 
 public class TankFrame extends Frame {
     static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
-    Tank MyTank = new Tank(200, 200, Dir.UP, this);
+    Tank MyTank = new Tank(200, 400, Dir.UP, this);
     List<Bullet> bullets = new ArrayList<>();
+    List<Tank> enemyTanks = new ArrayList<>();
 
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -34,6 +35,11 @@ public class TankFrame extends Frame {
         // 增强for循环不能删除元素
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).paint(g);
+        }
+
+        // 画出敌方坦克
+        for (int i = 0; i < enemyTanks.size(); i++) {
+            enemyTanks.get(i).paint(g);
         }
     }
 
