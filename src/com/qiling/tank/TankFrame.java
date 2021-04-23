@@ -31,8 +31,9 @@ public class TankFrame extends Frame {
     @Override
     public void paint(Graphics g) {
         MyTank.paint(g);
-        for (Bullet bullet : bullets) {
-            bullet.paint(g);
+        // 增强for循环不能删除元素
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).paint(g);
         }
     }
 
