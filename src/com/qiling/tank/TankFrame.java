@@ -5,11 +5,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TankFrame extends Frame {
     static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
-    Tank MyTank = new Tank(200, 200, Dir.UP);
-    Bullet b = new Bullet(300 , 300, Dir.UP);
+    Tank MyTank = new Tank(200, 200, Dir.UP, this);
+    List<Bullet> bullets = new ArrayList<>();
 
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -29,7 +31,9 @@ public class TankFrame extends Frame {
     @Override
     public void paint(Graphics g) {
         MyTank.paint(g);
-        b.paint(g);
+        for (Bullet bullet : bullets) {
+            bullet.paint(g);
+        }
     }
 
     // 消除闪烁现象
@@ -86,6 +90,10 @@ public class TankFrame extends Frame {
                     break;
                 case KeyEvent.VK_DOWN:
                     bD = false;
+                    break;
+                case KeyEvent.VK_CONTROL:
+                    // 按下ctrl键发射出一颗子弹
+                    MyTank.fire();
                     break;
             }
             setMainTankDir();
