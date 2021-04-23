@@ -4,16 +4,16 @@ import java.awt.*;
 
 public class Bullet {
     private static final int SPEED = 10;
-    private static final int WIDTH = 12;
-    private static final int HEIGHT = 5;
+    private static final int WIDTH = ResourceMgr.bulletD.getWidth();
+    private static final int HEIGHT = ResourceMgr.bulletD.getHeight();
     private int x, y;
     private final Dir dir;
     private boolean live = true;
     private final TankFrame tankFrame;
 
     public Bullet(int x, int y, Dir dir, TankFrame tankFrame) {
-        this.x = x + 25 - (WIDTH >> 1);
-        this.y = y + 25 - (HEIGHT >> 1);
+        this.x = x + (Tank.WIDTH >> 1) - (WIDTH >> 1);
+        this.y = y + (Tank.HEIGHT >> 1) - (HEIGHT >> 1);
         this.dir = dir;
         this.tankFrame = tankFrame;
     }

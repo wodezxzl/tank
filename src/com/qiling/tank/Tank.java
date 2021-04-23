@@ -5,6 +5,8 @@ import java.awt.*;
 public class Tank {
     private int x, y;
     private Dir dir;
+    public static final int WIDTH = ResourceMgr.tankL.getWidth();
+    public static final int HEIGHT = ResourceMgr.tankL.getHeight();
     private static final int SPEED = 5;
     // 坦克是否在移动
     private boolean moving = false;
