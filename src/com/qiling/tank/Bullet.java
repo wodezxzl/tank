@@ -7,15 +7,21 @@ public class Bullet {
     private static final int WIDTH = 10;
     private static final int HEIGHT = 10;
     private int x, y;
-    private Dir dir;
+    private final Dir dir;
+    private boolean live = true;
+    private final TankFrame tankFrame;
 
-    public Bullet(int x, int y, Dir dir) {
+    public Bullet(int x, int y, Dir dir, TankFrame tankFrame) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tankFrame = tankFrame;
     }
 
     public void paint(Graphics g) {
+        if (!live) {
+            tankFrame.bullets.remove(this);
+        }
         Color c = g.getColor();
         g.setColor(Color.RED);
         g.fillOval(x, y, WIDTH, HEIGHT);
@@ -39,5 +45,8 @@ public class Bullet {
                 y += SPEED;
                 break;
         }
+
+        // 判断是否清除子弹
+        if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y < TankFrame.GAME_HEIGHT) live = false;
     }
 }
