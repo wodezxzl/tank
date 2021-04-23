@@ -31,6 +31,10 @@ public class TankFrame extends Frame {
 
     @Override
     public void paint(Graphics g) {
+        Color c = g.getColor();
+        g.setColor(Color.WHITE);
+        g.drawString("子弹的数量" + bullets.size(), 10, 60);
+        g.drawString("敌人的数量" + enemyTanks.size(), 10, 60);
         MyTank.paint(g);
         // 增强for循环不能删除元素
         for (int i = 0; i < bullets.size(); i++) {
