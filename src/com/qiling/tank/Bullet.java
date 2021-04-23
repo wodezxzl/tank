@@ -3,7 +3,7 @@ package com.qiling.tank;
 import java.awt.*;
 
 public class Bullet {
-    private static final int SPEED = 5;
+    private static final int SPEED = 10;
     private static final int WIDTH = 10;
     private static final int HEIGHT = 10;
     private int x, y;
@@ -12,8 +12,8 @@ public class Bullet {
     private final TankFrame tankFrame;
 
     public Bullet(int x, int y, Dir dir, TankFrame tankFrame) {
-        this.x = x;
-        this.y = y;
+        this.x = x + 25 - (WIDTH >> 1);
+        this.y = y + 25 - (HEIGHT >> 1);
         this.dir = dir;
         this.tankFrame = tankFrame;
     }
@@ -47,6 +47,6 @@ public class Bullet {
         }
 
         // 判断是否清除子弹
-        if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y < TankFrame.GAME_HEIGHT) live = false;
+        if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) live = false;
     }
 }
