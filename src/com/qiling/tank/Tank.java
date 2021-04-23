@@ -5,13 +5,30 @@ import java.awt.*;
 public class Tank {
     private int x, y;
     private Dir dir;
-    public static final int WIDTH = ResourceMgr.tankL.getWidth();
-    public static final int HEIGHT = ResourceMgr.tankL.getHeight();
+    private static final int WIDTH = ResourceMgr.tankL.getWidth();
+    private static final int HEIGHT = ResourceMgr.tankL.getHeight();
     private static final int SPEED = 5;
     // 坦克是否在移动
     private boolean moving = false;
     // 获取tankFrame的引用, 方便给它传递子弹
     private final TankFrame tankFrame;
+    private boolean living = true;
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
+    }
 
     public Tank(int x, int y, Dir dir, TankFrame tankFrame) {
         this.x = x;
@@ -38,6 +55,7 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
+        if (!living) return;
         switch (dir) {
             case LEFT:
                 g.drawImage(ResourceMgr.tankL, x, y, null);
@@ -76,5 +94,9 @@ public class Tank {
 
     public void fire() {
         tankFrame.bullets.add(new Bullet(this.x, this.y, this.dir, this.tankFrame));
+    }
+
+    public void die() {
+        this.living = false;
     }
 }

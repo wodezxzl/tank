@@ -41,6 +41,13 @@ public class TankFrame extends Frame {
         for (int i = 0; i < enemyTanks.size(); i++) {
             enemyTanks.get(i).paint(g);
         }
+
+        // 碰撞检测
+        for (int i = 0; i < bullets.size(); i++) {
+            for (int j = 0; j < enemyTanks.size(); j++) {
+                bullets.get(i).collide(enemyTanks.get(j));
+            }
+        }
     }
 
     // 消除闪烁现象
