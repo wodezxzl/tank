@@ -55,7 +55,7 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
-        if (!living) return;
+        if (!living) tankFrame.enemyTanks.remove(this);
         switch (dir) {
             case LEFT:
                 g.drawImage(ResourceMgr.tankL, x, y, null);
