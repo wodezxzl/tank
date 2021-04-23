@@ -1,6 +1,7 @@
 package com.qiling.tank;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Tank {
     private int x, y;
@@ -13,6 +14,9 @@ public class Tank {
     // 获取tankFrame的引用, 方便给它传递子弹
     private final TankFrame tankFrame;
     private boolean living = true;
+    // 坦克的阵营
+    private Group group = Group.BAD;
+    private Random random = new Random();
 
     public int getX() {
         return x;
@@ -20,6 +24,14 @@ public class Tank {
 
     public int getY() {
         return y;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public static int getWIDTH() {
@@ -30,12 +42,13 @@ public class Tank {
         return HEIGHT;
     }
 
-    public Tank(int x, int y, Dir dir, TankFrame tankFrame) {
+    public Tank(int x, int y, Dir dir, TankFrame tankFrame, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         // 为了在Tank中能够访问到TankFrame, 需要初始化时传进来
         this.tankFrame = tankFrame;
+        this.group = group;
     }
 
     public Dir getDir() {
@@ -90,10 +103,12 @@ public class Tank {
                 y += SPEED;
                 break;
         }
+
+        if (random.nextInt(10) > 8) this.fire();
     }
 
     public void fire() {
-        tankFrame.bullets.add(new Bullet(this.x, this.y, this.dir, this.tankFrame));
+        tankFrame.bullets.add(new Bullet(this.x, this.y, this.dir, this.tankFrame, this.group));
     }
 
     public void die() {

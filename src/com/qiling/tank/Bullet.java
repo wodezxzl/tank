@@ -11,11 +11,22 @@ public class Bullet {
     private boolean living = true;
     private final TankFrame tankFrame;
 
-    public Bullet(int x, int y, Dir dir, TankFrame tankFrame) {
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    private Group group = Group.BAD;
+
+    public Bullet(int x, int y, Dir dir, TankFrame tankFrame, Group group) {
         this.x = x + (Tank.getWIDTH() >> 1) - (WIDTH >> 1);
         this.y = y + (Tank.getHEIGHT() >> 1) - (HEIGHT >> 1);
         this.dir = dir;
         this.tankFrame = tankFrame;
+        this.group = group;
     }
 
     public void paint(Graphics g) {
@@ -62,6 +73,9 @@ public class Bullet {
 
     // 碰撞检测
     public void collide(Tank tank) {
+        // 来自坦克自己打出的子弹与自己相撞不死亡
+        if (this.group == tank.getGroup()) return;
+
         Rectangle rectBullet = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
         Rectangle rectTank = new Rectangle(tank.getX(), tank.getY(), Tank.getWIDTH(), Tank.getHEIGHT());
         if (rectBullet.intersects(rectTank)) {
