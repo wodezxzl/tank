@@ -9,6 +9,9 @@ public class Main {
             frame.enemyTanks.add(new Tank(50 + 80 * i, 200, Dir.DOWN, frame, Group.BAD));
         }
 
+        // 加入背景音乐
+        new Thread(() -> new Audio("audio/war1.wav").loop()).start();
+
         while (true) {
             try {
                 Thread.sleep(50);

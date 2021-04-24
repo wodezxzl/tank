@@ -6,8 +6,8 @@ import java.util.Random;
 public class Tank {
     private int x, y;
     private Dir dir;
-    private static final int WIDTH = ResourceMgr.tankL.getWidth();
-    private static final int HEIGHT = ResourceMgr.tankL.getHeight();
+    private static final int WIDTH = ResourceMgr.goodTankL.getWidth();
+    private static final int HEIGHT = ResourceMgr.goodTankL.getHeight();
     private static final int SPEED = 5;
     // 坦克是否在移动
     private boolean moving = false;
@@ -17,6 +17,8 @@ public class Tank {
     // 坦克的阵营
     private Group group = Group.BAD;
     private Random random = new Random();
+    // 用于碰撞检测
+    Rectangle rect = new Rectangle();
 
     public int getX() {
         return x;
@@ -49,6 +51,11 @@ public class Tank {
         // 为了在Tank中能够访问到TankFrame, 需要初始化时传进来
         this.tankFrame = tankFrame;
         this.group = group;
+
+        rect.x = this.x;
+        rect.y = this.y;
+        rect.width = WIDTH;
+        rect.height = HEIGHT;
     }
 
     public Dir getDir() {
@@ -71,16 +78,16 @@ public class Tank {
         if (!living) tankFrame.enemyTanks.remove(this);
         switch (dir) {
             case LEFT:
-                g.drawImage(ResourceMgr.tankL, x, y, null);
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankL : ResourceMgr.badTankL, x, y, null);
                 break;
             case UP:
-                g.drawImage(ResourceMgr.tankU, x, y, null);
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankU : ResourceMgr.badTankU, x, y, null);
                 break;
             case RIGHT:
-                g.drawImage(ResourceMgr.tankR, x, y, null);
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankR : ResourceMgr.badTankR, x, y, null);
                 break;
             case DOWN:
-                g.drawImage(ResourceMgr.tankD, x, y, null);
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankD : ResourceMgr.badTankD, x, y, null);
                 break;
         }
         move();
@@ -88,7 +95,6 @@ public class Tank {
 
     private void move() {
         if (!moving) return;
-        // 判断方向移动
         switch (dir) {
             case LEFT:
                 x -= SPEED;
@@ -104,11 +110,39 @@ public class Tank {
                 break;
         }
 
-        if (random.nextInt(10) > 8) this.fire();
+        // 更新rect
+        rect.x = this.x;
+        rect.y = this.y;
+
+        // 敌方坦克5%概率自动开火和随机方向
+        if (this.group == Group.BAD) {
+            if (random.nextInt(100) > 95) {
+                this.fire();
+                // 敌方坦克随机方向
+                randomDir();
+            }
+
+        }
+
+        // 越界检测
+        checkBeyondBorder();
+    }
+
+    private void randomDir() {
+        this.dir = Dir.values()[random.nextInt(4)];
+    }
+
+    private void checkBeyondBorder() {
+        if (this.x < 30 ) x = 30;
+        if (this.y < 30) y = 30;
+        if (this.x > TankFrame.GAME_WIDTH - Tank.WIDTH) x = TankFrame.GAME_WIDTH - Tank.WIDTH;
+        if (this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT) y = TankFrame.GAME_HEIGHT - Tank.HEIGHT;
     }
 
     public void fire() {
-        tankFrame.bullets.add(new Bullet(this.x, this.y, this.dir, this.tankFrame, this.group));
+        int bx = x + (WIDTH >> 1) - (Bullet.getWIDTH() >> 1);
+        int by = y + (HEIGHT >> 1) - (Bullet.getHEIGHT() >> 1);
+        tankFrame.bullets.add(new Bullet(bx, by, this.dir, this.tankFrame, this.group));
     }
 
     public void die() {

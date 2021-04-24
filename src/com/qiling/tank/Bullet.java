@@ -10,6 +10,8 @@ public class Bullet {
     private final Dir dir;
     private boolean living = true;
     private final TankFrame tankFrame;
+    // 用于碰撞检测
+    Rectangle rect = new Rectangle();
 
     public Group getGroup() {
         return group;
@@ -21,12 +23,25 @@ public class Bullet {
 
     private Group group = Group.BAD;
 
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
+    }
+
     public Bullet(int x, int y, Dir dir, TankFrame tankFrame, Group group) {
-        this.x = x + (Tank.getWIDTH() >> 1) - (WIDTH >> 1);
-        this.y = y + (Tank.getHEIGHT() >> 1) - (HEIGHT >> 1);
+        this.x = x;
+        this.y = y;
         this.dir = dir;
         this.tankFrame = tankFrame;
         this.group = group;
+
+        rect.x = this.x;
+        rect.y = this.y;
+        rect.width = WIDTH;
+        rect.height = HEIGHT;
     }
 
     public void paint(Graphics g) {
@@ -67,6 +82,10 @@ public class Bullet {
                 break;
         }
 
+        // 更新rect
+        rect.x = this.x;
+        rect.y = this.y;
+
         // 判断是否清除子弹
         if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) living = false;
     }
@@ -76,11 +95,14 @@ public class Bullet {
         // 来自坦克自己打出的子弹与自己相撞不死亡
         if (this.group == tank.getGroup()) return;
 
-        Rectangle rectBullet = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
-        Rectangle rectTank = new Rectangle(tank.getX(), tank.getY(), Tank.getWIDTH(), Tank.getHEIGHT());
-        if (rectBullet.intersects(rectTank)) {
+        if (rect.intersects(tank.rect)) {
             tank.die();
             this.die();
+
+            // 添加爆炸对象
+            int ex = tank.getX() + (Tank.getWIDTH() >> 1) - (Explode.getWIDTH() >> 1);
+            int ey = tank.getY() + (Tank.getHEIGHT() >> 1) - (Explode.getHEIGHT() >> 1);
+            tankFrame.explodes.add(new Explode(ex, ey, tankFrame));
         }
     }
 
