@@ -1,11 +1,15 @@
 package com.qiling.tank;
 
+import java.util.Objects;
+
 public class Main {
     public static void main(String[] args) {
         TankFrame frame = new TankFrame();
 
+        int initBadTanksCount = Integer.parseInt((String) Objects.requireNonNull(PropertyMgr.get("initBadTanksCount")));
+
         // 初始化敌方坦克
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i <= initBadTanksCount; i++) {
             frame.enemyTanks.add(new Tank(50 + 80 * i, 200, Dir.DOWN, frame, Group.BAD));
         }
 
