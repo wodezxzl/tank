@@ -1,2 +1,6 @@
 #bad tanks count at initialization
 initBadTanksCount=10
+tankSpeed=5
+bulletSpeed=10
+gameWidth=1080
+gameHeight=720

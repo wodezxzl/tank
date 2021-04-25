@@ -7,9 +7,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TankFrame extends Frame {
-    static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
+    static final int
+            GAME_WIDTH = Integer.parseInt(Objects.requireNonNull(PropertyMgr.get("gameWidth"))),
+            GAME_HEIGHT = Integer.parseInt(Objects.requireNonNull(PropertyMgr.get("gameHeight")));
     Tank MyTank = new Tank(200, 400, Dir.UP, this, Group.GOOD);
     List<Bullet> bullets = new ArrayList<>();
     List<Tank> enemyTanks = new ArrayList<>();

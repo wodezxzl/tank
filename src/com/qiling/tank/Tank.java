@@ -1,6 +1,7 @@
 package com.qiling.tank;
 
 import java.awt.*;
+import java.util.Objects;
 import java.util.Random;
 
 public class Tank {
@@ -8,7 +9,7 @@ public class Tank {
     private Dir dir;
     private static final int WIDTH = ResourceMgr.goodTankL.getWidth();
     private static final int HEIGHT = ResourceMgr.goodTankL.getHeight();
-    private static final int SPEED = 5;
+    private static final int SPEED = Integer.parseInt(Objects.requireNonNull(PropertyMgr.get("tankSpeed")));
     // 坦克是否在移动
     private boolean moving = false;
     // 获取tankFrame的引用, 方便给它传递子弹

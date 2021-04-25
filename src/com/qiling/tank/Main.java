@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         TankFrame frame = new TankFrame();
 
-        int initBadTanksCount = Integer.parseInt((String) Objects.requireNonNull(PropertyMgr.get("initBadTanksCount")));
+        int initBadTanksCount = Integer.parseInt(Objects.requireNonNull(PropertyMgr.get("initBadTanksCount")));
 
         // 初始化敌方坦克
         for (int i = 0; i <= initBadTanksCount; i++) {

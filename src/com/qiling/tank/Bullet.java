@@ -1,9 +1,10 @@
 package com.qiling.tank;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class Bullet {
-    private static final int SPEED = 10;
+    private static final int SPEED = Integer.parseInt(Objects.requireNonNull(PropertyMgr.get("bulletSpeed")));
     private static final int WIDTH = ResourceMgr.bulletD.getWidth();
     private static final int HEIGHT = ResourceMgr.bulletD.getHeight();
     private int x, y;
