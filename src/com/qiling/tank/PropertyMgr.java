@@ -6,6 +6,8 @@ import java.util.Properties;
 public class PropertyMgr {
     static Properties props = new Properties();
 
+    private PropertyMgr(){};
+
     static {
         try {
             props.load(PropertyMgr.class.getClassLoader().getResourceAsStream("config"));
