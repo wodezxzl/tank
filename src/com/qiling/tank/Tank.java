@@ -13,7 +13,7 @@ public class Tank {
     // 坦克是否在移动
     private boolean moving = false;
     // 获取tankFrame的引用, 方便给它传递子弹
-    private final TankFrame tankFrame;
+    final TankFrame tankFrame;
     private boolean living = true;
     // 坦克的阵营
     private Group group = Group.BAD;
@@ -118,7 +118,7 @@ public class Tank {
         // 敌方坦克5%概率自动开火和随机方向
         if (this.group == Group.BAD) {
             if (random.nextInt(100) > 95) {
-                this.fire();
+                this.fire(DefaultFireStrategy.getInstance());
                 // 敌方坦克随机方向
                 randomDir();
             }
@@ -140,10 +140,8 @@ public class Tank {
         if (this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT) y = TankFrame.GAME_HEIGHT - Tank.HEIGHT;
     }
 
-    public void fire() {
-        int bx = x + (WIDTH >> 1) - (Bullet.getWIDTH() >> 1);
-        int by = y + (HEIGHT >> 1) - (Bullet.getHEIGHT() >> 1);
-        tankFrame.bullets.add(new Bullet(bx, by, this.dir, this.tankFrame, this.group));
+    public void fire(FireStrategy fireStrategy) {
+        fireStrategy.fire(this);
     }
 
     public void die() {

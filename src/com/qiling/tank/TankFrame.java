@@ -17,6 +17,8 @@ public class TankFrame extends Frame {
     List<Bullet> bullets = new ArrayList<>();
     List<Tank> enemyTanks = new ArrayList<>();
     List<Explode> explodes = new ArrayList<>();
+    // 消除闪烁现象
+    Image offscreenImage = null;
 
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -66,8 +68,6 @@ public class TankFrame extends Frame {
         }
     }
 
-    // 消除闪烁现象
-    Image offscreenImage = null;
     @Override
     public void update(Graphics g) {
         if (offscreenImage == null) {
@@ -76,13 +76,13 @@ public class TankFrame extends Frame {
         Graphics goffScreen = offscreenImage.getGraphics();
         Color c = goffScreen.getColor();
         goffScreen.setColor(Color.BLACK);
-        goffScreen.fillRect(0 , 0, GAME_WIDTH, GAME_HEIGHT);
+        goffScreen.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         goffScreen.setColor(c);
         paint(goffScreen);
         g.drawImage(offscreenImage, 0, 0, null);
     }
 
-    class MyKeyListener extends KeyAdapter{
+    class MyKeyListener extends KeyAdapter {
         boolean bL, bU, bR, bD;
 
         @Override
@@ -123,7 +123,16 @@ public class TankFrame extends Frame {
                     break;
                 case KeyEvent.VK_CONTROL:
                     // 按下ctrl键发射出一颗子弹
-                    MyTank.fire();
+                    // 此处使用策略模式
+                    String goodFSName = PropertyMgr.get("goodFS");
+                    FireStrategy instance;
+                    try {
+                        instance = (FireStrategy) Class.forName(goodFSName).getDeclaredConstructor().newInstance();
+                    } catch (Exception e2) {
+                        instance = DefaultFireStrategy.getInstance();
+                        e2.printStackTrace();
+                    }
+                    MyTank.fire(instance);
                     break;
             }
             setMainTankDir();

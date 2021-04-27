@@ -4,3 +4,7 @@ tankSpeed=5
 bulletSpeed=10
 gameWidth=1080
 gameHeight=720
+
+#fireStragegy
+goodFS=com.qiling.tank.FourDirFireStrategy
+badFS=com.qiling.tank.DefaultFireStrategy

@@ -43,6 +43,9 @@ public class Bullet {
         rect.y = this.y;
         rect.width = WIDTH;
         rect.height = HEIGHT;
+
+        // new出子弹后自己加入bullets集合
+        tankFrame.bullets.add(this);
     }
 
     public void paint(Graphics g) {
