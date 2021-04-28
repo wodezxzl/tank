@@ -10,7 +10,7 @@ public class FourDirFireStrategy implements FireStrategy{
         Dir[] dirs = Dir.values();
 
         for (Dir dir : dirs) {
-            new Bullet(bx, by, dir, t.tankFrame, t.getGroup());
+            new Bullet(bx, by, dir, t.gm, t.getGroup());
         }
 
         // 坦克开火音乐

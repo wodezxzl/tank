@@ -11,7 +11,7 @@ public class DefaultFireStrategy implements FireStrategy {
     public void fire(Tank t) {
         int bx = t.getX() + (Tank.getWIDTH() >> 1) - (Bullet.getWIDTH() >> 1);
         int by = t.getY() + (Tank.getHEIGHT() >> 1) - (Bullet.getHEIGHT() >> 1);
-        new Bullet(bx, by, t.getDir(), t.tankFrame, t.getGroup());
+        new Bullet(bx, by, t.getDir(), t.gm, t.getGroup());
 
         // 坦克开火音乐
         if (t.getGroup() == Group.GOOD) {

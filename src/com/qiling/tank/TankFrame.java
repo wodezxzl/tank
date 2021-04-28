@@ -5,20 +5,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class TankFrame extends Frame {
     static final int
             GAME_WIDTH = Integer.parseInt(Objects.requireNonNull(PropertyMgr.get("gameWidth"))),
             GAME_HEIGHT = Integer.parseInt(Objects.requireNonNull(PropertyMgr.get("gameHeight")));
-    Tank MyTank = new Tank(200, 400, Dir.UP, this, Group.GOOD);
-    List<Bullet> bullets = new ArrayList<>();
-    List<Tank> enemyTanks = new ArrayList<>();
-    List<Explode> explodes = new ArrayList<>();
-    // 消除闪烁现象
-    Image offscreenImage = null;
+    GameModel gm = new GameModel();
 
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -35,39 +28,14 @@ public class TankFrame extends Frame {
         });
     }
 
+    // 将游戏画在屏幕上
     @Override
     public void paint(Graphics g) {
-        Color c = g.getColor();
-        g.setColor(Color.WHITE);
-        g.drawString("子弹的数量" + bullets.size(), 10, 60);
-        g.drawString("敌人的数量" + enemyTanks.size(), 10, 80);
-        MyTank.paint(g);
-        // 增强for循环不能删除元素
-        for (int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).paint(g);
-        }
-
-        // 画出敌方坦克
-        for (int i = 0; i < enemyTanks.size(); i++) {
-            enemyTanks.get(i).setMoving(true);
-            enemyTanks.get(i).paint(g);
-        }
-
-        // 画出所有爆炸
-        for (int i = 0; i < explodes.size(); i++) {
-            explodes.get(i).paint(g);
-        }
-
-        // 碰撞检测
-        for (int i = 0; i < bullets.size(); i++) {
-            // 所有子弹也要和主坦克进行碰撞检测
-            bullets.get(i).collide(MyTank);
-            for (int j = 0; j < enemyTanks.size(); j++) {
-                bullets.get(i).collide(enemyTanks.get(j));
-            }
-        }
+        gm.paint(g);
     }
 
+    // 消除闪烁现象
+    Image offscreenImage = null;
     @Override
     public void update(Graphics g) {
         if (offscreenImage == null) {
@@ -82,6 +50,7 @@ public class TankFrame extends Frame {
         g.drawImage(offscreenImage, 0, 0, null);
     }
 
+    // 通过按键来控制主站坦克
     class MyKeyListener extends KeyAdapter {
         boolean bL, bU, bR, bD;
 
@@ -132,13 +101,16 @@ public class TankFrame extends Frame {
                         instance = DefaultFireStrategy.getInstance();
                         e2.printStackTrace();
                     }
-                    MyTank.fire(instance);
+                    gm.getMyTank().fire(instance);
                     break;
             }
             setMainTankDir();
         }
 
         private void setMainTankDir() {
+            // 通过GameModel获取主战坦克
+            Tank MyTank = gm.getMyTank();
+
             if (!bL && !bU && !bR && !bD) {
                 // 按键松开时进入这个判断
                 // 没有键被按下时坦克不动

@@ -12,8 +12,7 @@ public class Tank {
     private static final int SPEED = Integer.parseInt(Objects.requireNonNull(PropertyMgr.get("tankSpeed")));
     // 坦克是否在移动
     private boolean moving = false;
-    // 获取tankFrame的引用, 方便给它传递子弹
-    final TankFrame tankFrame;
+    GameModel gm = null;
     private boolean living = true;
     // 坦克的阵营
     private Group group = Group.BAD;
@@ -45,12 +44,12 @@ public class Tank {
         return HEIGHT;
     }
 
-    public Tank(int x, int y, Dir dir, TankFrame tankFrame, Group group) {
+    public Tank(int x, int y, Dir dir, GameModel gm, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         // 为了在Tank中能够访问到TankFrame, 需要初始化时传进来
-        this.tankFrame = tankFrame;
+        this.gm = gm;
         this.group = group;
 
         rect.x = this.x;
@@ -76,7 +75,7 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
-        if (!living) tankFrame.enemyTanks.remove(this);
+        if (!living) gm.enemyTanks.remove(this);
         switch (dir) {
             case LEFT:
                 g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankL : ResourceMgr.badTankL, x, y, null);

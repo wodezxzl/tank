@@ -10,7 +10,7 @@ public class Bullet {
     private int x, y;
     private final Dir dir;
     private boolean living = true;
-    private final TankFrame tankFrame;
+    private final GameModel gm;
     // 用于碰撞检测
     Rectangle rect = new Rectangle();
 
@@ -32,11 +32,11 @@ public class Bullet {
         return HEIGHT;
     }
 
-    public Bullet(int x, int y, Dir dir, TankFrame tankFrame, Group group) {
+    public Bullet(int x, int y, Dir dir, GameModel gm, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tankFrame = tankFrame;
+        this.gm = gm;
         this.group = group;
 
         rect.x = this.x;
@@ -45,12 +45,12 @@ public class Bullet {
         rect.height = HEIGHT;
 
         // new出子弹后自己加入bullets集合
-        tankFrame.bullets.add(this);
+        gm.bullets.add(this);
     }
 
     public void paint(Graphics g) {
         if (!living) {
-            tankFrame.bullets.remove(this);
+            gm.bullets.remove(this);
         }
         switch (dir) {
             case LEFT:
@@ -106,7 +106,7 @@ public class Bullet {
             // 添加爆炸对象
             int ex = tank.getX() + (Tank.getWIDTH() >> 1) - (Explode.getWIDTH() >> 1);
             int ey = tank.getY() + (Tank.getHEIGHT() >> 1) - (Explode.getHEIGHT() >> 1);
-            tankFrame.explodes.add(new Explode(ex, ey, tankFrame));
+            gm.explodes.add(new Explode(ex, ey, gm));
         }
     }
 
