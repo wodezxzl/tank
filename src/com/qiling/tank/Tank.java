@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.Objects;
 import java.util.Random;
 
-public class Tank {
+public class Tank extends GameObject{
     private int x, y;
     private Dir dir;
     private static final int WIDTH = ResourceMgr.goodTankL.getWidth();
@@ -19,6 +19,10 @@ public class Tank {
     private Random random = new Random();
     // 用于碰撞检测
     Rectangle rect = new Rectangle();
+
+    public Rectangle getRect() {
+        return rect;
+    }
 
     public int getX() {
         return x;
@@ -74,8 +78,9 @@ public class Tank {
         this.moving = moving;
     }
 
+    @Override
     public void paint(Graphics g) {
-        if (!living) gm.enemyTanks.remove(this);
+        if (!living) gm.remove(this);
         switch (dir) {
             case LEFT:
                 g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankL : ResourceMgr.badTankL, x, y, null);
@@ -145,5 +150,26 @@ public class Tank {
 
     public void die() {
         this.living = false;
+    }
+
+    public void reverse() {
+        switch (dir) {
+            case LEFT:
+                dir = Dir.RIGHT;
+                x += 2*SPEED;
+                break;
+            case UP:
+                dir = Dir.DOWN;
+                y += 2*SPEED;
+                break;
+            case RIGHT:
+                dir = Dir.LEFT;
+                x -= 2*SPEED;
+                break;
+            case DOWN:
+                dir = Dir.UP;
+                y -= 2*SPEED;
+                break;
+        }
     }
 }

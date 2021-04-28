@@ -8,3 +8,6 @@ gameHeight=720
 #fireStragegy
 goodFS=com.qiling.tank.FourDirFireStrategy
 badFS=com.qiling.tank.DefaultFireStrategy
+
+#Collider
+colliders=com.qiling.tank.collider.BulletTankCollider,com.qiling.tank.collider.TankTankCollider

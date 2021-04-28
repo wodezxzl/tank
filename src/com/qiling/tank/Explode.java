@@ -2,7 +2,7 @@ package com.qiling.tank;
 
 import java.awt.*;
 
-public class Explode {
+public class Explode extends GameObject{
     private static final int WIDTH = ResourceMgr.explodes[0].getWidth();
     private static final int HEIGHT = ResourceMgr.explodes[0].getHeight();
     private int x, y;
@@ -28,7 +28,7 @@ public class Explode {
         // 注意这里之前使用的是for循环, 逻辑错误, 每次进来都从0开始循环了
         g.drawImage(ResourceMgr.explodes[step++], x, y, null);
         if (step >= ResourceMgr.explodes.length - 1) {
-            gm.explodes.remove(this);
+            gm.remove(this);
         }
     }
 }

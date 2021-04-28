@@ -3,7 +3,7 @@ package com.qiling.tank;
 import java.awt.*;
 import java.util.Objects;
 
-public class Bullet {
+public class Bullet extends GameObject{
     private static final int SPEED = Integer.parseInt(Objects.requireNonNull(PropertyMgr.get("bulletSpeed")));
     private static final int WIDTH = ResourceMgr.bulletD.getWidth();
     private static final int HEIGHT = ResourceMgr.bulletD.getHeight();
@@ -13,6 +13,14 @@ public class Bullet {
     private final GameModel gm;
     // 用于碰撞检测
     Rectangle rect = new Rectangle();
+
+    public GameModel getGM() {
+        return gm;
+    }
+
+    public Rectangle getRect() {
+        return rect;
+    }
 
     public Group getGroup() {
         return group;
@@ -44,13 +52,13 @@ public class Bullet {
         rect.width = WIDTH;
         rect.height = HEIGHT;
 
-        // new出子弹后自己加入bullets集合
-        gm.bullets.add(this);
+        // new出子弹后自己加入集合
+        gm.add(this);
     }
 
     public void paint(Graphics g) {
         if (!living) {
-            gm.bullets.remove(this);
+            gm.remove(this);
         }
         switch (dir) {
             case LEFT:
@@ -94,23 +102,7 @@ public class Bullet {
         if (x < 0 || y < 0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) living = false;
     }
 
-    // 碰撞检测
-    public void collide(Tank tank) {
-        // 来自坦克自己打出的子弹与自己相撞不死亡
-        if (this.group == tank.getGroup()) return;
-
-        if (rect.intersects(tank.rect)) {
-            tank.die();
-            this.die();
-
-            // 添加爆炸对象
-            int ex = tank.getX() + (Tank.getWIDTH() >> 1) - (Explode.getWIDTH() >> 1);
-            int ey = tank.getY() + (Tank.getHEIGHT() >> 1) - (Explode.getHEIGHT() >> 1);
-            gm.explodes.add(new Explode(ex, ey, gm));
-        }
-    }
-
-    private void die() {
+    public void die() {
         this.living = false;
     }
 }
