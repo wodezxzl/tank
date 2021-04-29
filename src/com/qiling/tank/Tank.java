@@ -19,6 +19,8 @@ public class Tank extends GameObject{
     private Random random = new Random();
     // 用于碰撞检测
     Rectangle rect = new Rectangle();
+    // 用于记录上一个位置
+    private int oldX, oldY;
 
     public Rectangle getRect() {
         return rect;
@@ -100,6 +102,8 @@ public class Tank extends GameObject{
 
     private void move() {
         if (!moving) return;
+        oldX = x;
+        oldY = y;
         switch (dir) {
             case LEFT:
                 x -= SPEED;
@@ -152,24 +156,8 @@ public class Tank extends GameObject{
         this.living = false;
     }
 
-    public void reverse() {
-        switch (dir) {
-            case LEFT:
-                dir = Dir.RIGHT;
-                x += 2*SPEED;
-                break;
-            case UP:
-                dir = Dir.DOWN;
-                y += 2*SPEED;
-                break;
-            case RIGHT:
-                dir = Dir.LEFT;
-                x -= 2*SPEED;
-                break;
-            case DOWN:
-                dir = Dir.UP;
-                y -= 2*SPEED;
-                break;
-        }
+    public void back() {
+        x = oldX;
+        y = oldY;
     }
 }

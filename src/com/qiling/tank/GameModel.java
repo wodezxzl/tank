@@ -24,6 +24,12 @@ public class GameModel {
             tank.setMoving(true);
             add(tank);
         }
+
+        // 初始化墙
+        add(new Wall(150, 150, 200, 50));
+        add(new Wall(550, 150, 200, 50));
+        add(new Wall(300, 300, 50, 200));
+        add(new Wall(550, 300, 50, 200));
     };
 
     public void add(GameObject obj) {
